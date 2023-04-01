@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import ListView
-from rest_framework import generics
+from rest_framework import generics, viewsets
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 
 from .models import *
@@ -25,41 +25,46 @@ menu = [{'title': 'Войти', 'url_name': 'login'},
 # ]
 #
 
-
+# Outputs all items
 class ItemAPIList(generics.ListCreateAPIView):
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
-    permission_classes = (IsAuthenticatedOrReadOnly, )
+    permission_classes = (IsAuthenticatedOrReadOnly,)
 
 
+# Outputs all categories
 class CategoryAPIList(generics.ListCreateAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    permission_classes = (IsAuthenticatedOrReadOnly, )
+    permission_classes = (IsAuthenticatedOrReadOnly,)
 
 
+# Outputs items through slug
 class ItemAPIUpdate(generics.RetrieveUpdateAPIView):
     queryset = Item.objects.all()
-    serializer_class = ItemSerializer
-    permission_classes = (IsAuthenticated, )
+    serializer_class = ItemSlugSerializer
+    lookup_field = 'slug'
 
 
+# Outputs categories through slug
 class CategoryAPIUpdate(generics.RetrieveUpdateAPIView):
     queryset = Category.objects.all()
-    serializer_class = CategorySerializer
-    permission_classes = (IsAuthenticated, )
+    serializer_class = ItemsInCatSerializer
+    permission_classes = (IsAuthenticated,)
+    lookup_field = 'slug'
 
 
+# destroy item or category
 class ItemAPIDestroy(generics.RetrieveDestroyAPIView):
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
-    permission_classes = (IsAdminOrReadOnly, )
+    permission_classes = (IsAdminOrReadOnly,)
 
 
 class CategoryAPIDestroy(generics.RetrieveDestroyAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    permission_classes = (IsAdminOrReadOnly, )
+    permission_classes = (IsAdminOrReadOnly,)
 
 # class MainPage(DataMixin, ListView):
 #     model = Category
