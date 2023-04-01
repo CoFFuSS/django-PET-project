@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth.models import User
 
 
 class Item(models.Model):
@@ -12,6 +13,7 @@ class Item(models.Model):
     is_active = models.BooleanField(default=True, verbose_name='Наличие')
     cat = models.ForeignKey('Category', on_delete=models.PROTECT,
                             verbose_name='Категория')
+    user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
 
     def __str__(self) -> str:
         return self.title
@@ -32,6 +34,7 @@ class Category(models.Model):
                             db_index=True, verbose_name='URL')
     availability = models.BooleanField(default=True, verbose_name='Наличие товаров')
     content = models.CharField(max_length=155, verbose_name='Информация')
+    user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
 
     def __str__(self) -> str:
         return self.name

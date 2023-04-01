@@ -1,12 +1,13 @@
 from django.shortcuts import render
 from django.views.generic import ListView
 from rest_framework import generics
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 
 from .models import *
 from .forms import *
 from .utils import *
 from .serializers import *
+from .permissions import *
 
 menu = [{'title': 'Войти', 'url_name': 'login'},
         {'title': 'Профиль', 'url_name': 'profile'},
@@ -28,12 +29,37 @@ menu = [{'title': 'Войти', 'url_name': 'login'},
 class ItemAPIList(generics.ListCreateAPIView):
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
+    permission_classes = (IsAuthenticatedOrReadOnly, )
 
 
-class CatAPIList(generics.ListCreateAPIView):
+class CategoryAPIList(generics.ListCreateAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
+    permission_classes = (IsAuthenticatedOrReadOnly, )
 
+
+class ItemAPIUpdate(generics.RetrieveUpdateAPIView):
+    queryset = Item.objects.all()
+    serializer_class = ItemSerializer
+    permission_classes = (IsAuthenticated, )
+
+
+class CategoryAPIUpdate(generics.RetrieveUpdateAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    permission_classes = (IsAuthenticated, )
+
+
+class ItemAPIDestroy(generics.RetrieveDestroyAPIView):
+    queryset = Item.objects.all()
+    serializer_class = ItemSerializer
+    permission_classes = (IsAdminOrReadOnly, )
+
+
+class CategoryAPIDestroy(generics.RetrieveDestroyAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
+    permission_classes = (IsAdminOrReadOnly, )
 
 # class MainPage(DataMixin, ListView):
 #     model = Category

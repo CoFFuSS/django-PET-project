@@ -16,10 +16,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from store.views import ItemAPIList, CatAPIList
+from store.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/store/', ItemAPIList.as_view()),
-    path('api/v1/category/', CatAPIList.as_view()),
+    path('api/v1/category/', CategoryAPIList.as_view()),
+    path('api/v1/store/<int:pk>/', ItemAPIUpdate.as_view()),
+    path('api/v1/category/<int:pk>/', CategoryAPIUpdate.as_view()),
+    path('api/v1/store-delete/<int:pk>/', ItemAPIDestroy.as_view()),
+    path('api/v1/category-delete/<int:pk>/', CategoryAPIDestroy.as_view()),
+
 ]
