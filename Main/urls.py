@@ -16,6 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from store.views import ItemAPIList, CatAPIList
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/v1/store/', ItemAPIList.as_view()),
+    path('api/v1/category/', CatAPIList.as_view()),
 ]

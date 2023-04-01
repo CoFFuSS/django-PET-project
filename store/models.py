@@ -6,7 +6,7 @@ class Item(models.Model):
     title = models.CharField(max_length=255, verbose_name='Заголовок')
     slug = models.SlugField(max_length=255, unique=True,
                             db_index=True, verbose_name='URL')
-    description = models.CharField(blank=True, verbose_name='Описание')
+    description = models.TextField(blank=True, verbose_name='Описание')
     photo = models.ImageField(upload_to='photos/%Y/%m/%d', verbose_name='Фото')
     # score
     is_active = models.BooleanField(default=True, verbose_name='Наличие')
