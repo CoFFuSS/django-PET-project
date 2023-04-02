@@ -14,18 +14,25 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
-from rest_framework.routers import *
+from django.urls import path, include, re_path
+
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView, TokenVerifyView
 
 from store.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/v1/category/', CategoryAPIList.as_view()),  # all categories without items
-    path('api/v1/store/', ItemAPIList.as_view()),  # all items
-    path('api/v1/<path:categories>/<slug:slug>/', ItemAPIUpdate.as_view()),  # item through slug
-    path('api/v1/category/<slug:slug>/', CategoryAPIUpdate.as_view()),  # category through slug with items
-    path('api/v1/store-delete/<int:pk>/', ItemAPIDestroy.as_view()),
-    path('api/v1/category-delete/<int:pk>/', CategoryAPIDestroy.as_view()),
+    path('api/v1/drf-auth/', include('rest_framework.urls')),
+    path('categories/', CategoryAPIList.as_view()),  # all categories without items
+    path('items/', ItemAPIList.as_view()),  # all items
+    path('item/<path:categories>/<slug:slug>/', ItemAPIUpdate.as_view()),  # item through slug
+    path('<slug:slug>/', CategoryAPIUpdate.as_view()),  # category through slug with items
+    path('item-delete/<int:pk>/', ItemAPIDestroy.as_view()),
+    path('category-delete/<int:pk>/', CategoryAPIDestroy.as_view()),
+    path('api/v1/auth/', include('djoser.urls')),
+    re_path(r'^auth/', include('djoser.urls.authtoken')),
+    path('api/v1/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/v1/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/v1/token/verify/', TokenVerifyView.as_view(), name='token_verify'),
 
 ]

@@ -6,12 +6,16 @@ from .models import *
 
 
 class ItemSerializer(serializers.ModelSerializer):
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+
     class Meta:
         model = Item
         fields = '__all__'
 
 
 class ItemSlugSerializer(serializers.ModelSerializer):
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+
     class Meta:
         model = Item
         fields = '__all__'
@@ -28,11 +32,12 @@ class CategorySerializer(serializers.ModelSerializer):
 
 class ItemsInCatSerializer(serializers.ModelSerializer):
     user = serializers.HiddenField(default=serializers.CurrentUserDefault())
-    items = serializers.SlugRelatedField(
-        many=True,
-        read_only=True,
-        slug_field='slug'
-    )
+    # items = serializers.SlugRelatedField(
+    #     many=True,
+    #     read_only=True,
+    #     slug_field='slug'
+    # )
+    items = ItemSlugSerializer(many=True, read_only=True)
 
     class Meta:
         model = Category

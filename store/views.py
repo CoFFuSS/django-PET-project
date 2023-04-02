@@ -29,7 +29,7 @@ menu = [{'title': 'Войти', 'url_name': 'login'},
 class ItemAPIList(generics.ListCreateAPIView):
     queryset = Item.objects.all()
     serializer_class = ItemSerializer
-    permission_classes = (IsAuthenticatedOrReadOnly,)
+    permission_classes = (IsAuthenticated,)
 
 
 # Outputs all categories
@@ -43,6 +43,7 @@ class CategoryAPIList(generics.ListCreateAPIView):
 class ItemAPIUpdate(generics.RetrieveUpdateAPIView):
     queryset = Item.objects.all()
     serializer_class = ItemSlugSerializer
+    permission_classes = (IsAuthenticatedOrReadOnly,)
     lookup_field = 'slug'
 
 
@@ -50,7 +51,7 @@ class ItemAPIUpdate(generics.RetrieveUpdateAPIView):
 class CategoryAPIUpdate(generics.RetrieveUpdateAPIView):
     queryset = Category.objects.all()
     serializer_class = ItemsInCatSerializer
-    permission_classes = (IsAuthenticated,)
+    permission_classes = (IsAuthenticatedOrReadOnly,)
     lookup_field = 'slug'
 
 
